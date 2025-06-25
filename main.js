@@ -28,7 +28,7 @@ const pAequorFactory = (specimenNum, dna) => {
         return mutated;
         } else {
           newBase = returnRandBase();
-          this.dna.splice(randomBase, 1, newBase);
+          this.dna.splice(randomIndex, 1, newBase);
           return this.dna;
         }
     },
@@ -61,9 +61,8 @@ const pAequorFactory = (specimenNum, dna) => {
   return newSpecimen;
 }
 // Loop to fill up the array based on the instances desired
-
+const survivingSpecimenArray = [];
 const survivingSpecimen = instances => {
-  const survivingSpecimenArray = [];
   for (let i = 1; i > 0; i++) {
     if (pAequorFactory(i, mockUpStrand()).willLikelySurvive() === true){
       survivingSpecimenArray.push(pAequorFactory(i, mockUpStrand()));
@@ -74,8 +73,11 @@ const survivingSpecimen = instances => {
   };
   return survivingSpecimenArray;
 };
+
+survivingSpecimen(30);
 //printing 30 instances of surviving specimen
-console.log(survivingSpecimen(30));
+console.log(survivingSpecimenArray);
+
 
 
 
