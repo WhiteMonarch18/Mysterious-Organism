@@ -13,30 +13,70 @@ const mockUpStrand = () => {
   return newStrand;
 };
 
+// Creates random specimen taking in two parameters
 const pAequorFactory = (specimenNum, dna) => {
-  return {
-    specimenNum,
-    dna,
+  const newSpecimen = {
+    specimenNum: specimenNum,
+    dna: dna,
     mutate() {
-      const randIndex = Math.floor(Math.random() * this.dna.length);
-      let newBase;
-      do {
-        newBase = returnRandBase();
-      } while (newBase === this.dna[randIndex]);
-      this.dna[randIndex] = newBase;
-      return this.dna;
+      let randomIndex = Math.floor(Math.random() * this.dna.length);
+      let newBase = returnRandBase();
+      let randomBase = this.dna[randomIndex];
+      if (newBase !== randomBase) {
+        this.dna.splice(randomBase, 1, newBase);
+        const mutated = this.dna;
+        return mutated;
+        } else {
+          newBase = returnRandBase();
+          this.dna.splice(randomBase, 1, newBase);
+          return this.dna;
+        }
     },
-    compareDNA(other) {
-      const sameBases = this.dna.filter((base, index) => base === other.dna[index]).length;
-      const percentage = ((sameBases / this.dna.length) * 100).toFixed(2);
-      console.log(`Specimen #${this.specimenNum} and Specimen #${other.specimenNum} have ${percentage}% DNA in common.`);
+    compareDNA(pAequor) {
+      let identicalBases = 0;
+      for (let i = 0; i < this.dna.length; i++){
+        if(this.dna[i] === pAequor.dna[i]){
+          identicalBases++;
+        }
+      };
+      const percentDNA = (identicalBases/this.dna.length) * 100;
+      return `specimen #1 and specimen #2 have ${percentDNA}% DNA in common`;
     },
     willLikelySurvive() {
-      const survivalRate = this.dna.filter(base => base === 'C' || base === 'G').length / this.dna.length;
-      return survivalRate >= 0.6;
+      let baseCounter = 0;
+      for (let i = 0; i < this.dna.length; i++) {
+        if (this.dna[i] === 'C' || this.dna[i] === 'G') {
+          baseCounter++;
+        }
+      } // Count the number of 'C' and 'G' bases
+      // If the count is greater than 60% of the total length of the DNA strand
+      if (baseCounter > (this.dna.length/10)*6) {
+        return true;
+      } else {
+        return false;
+      }
     }
   };
+  // Return Full New Specimen object
+  return newSpecimen;
 }
+// Loop to fill up the array based on the instances desired
+
+const survivingSpecimen = instances => {
+  const survivingSpecimenArray = [];
+  for (let i = 1; i > 0; i++) {
+    if (pAequorFactory(i, mockUpStrand()).willLikelySurvive() === true){
+      survivingSpecimenArray.push(pAequorFactory(i, mockUpStrand()));
+    };
+    if (survivingSpecimenArray.length === instances){
+      break;
+    }
+  };
+  return survivingSpecimenArray;
+};
+//printing 30 instances of surviving specimen
+console.log(survivingSpecimen(30));
+
 
 
 
