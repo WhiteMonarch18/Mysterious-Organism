@@ -23,7 +23,7 @@ const pAequorFactory = (specimenNum, dna) => {
       let newBase = returnRandBase();
       let randomBase = this.dna[randomIndex];
       if (newBase !== randomBase) {
-        this.dna.splice(randomBase, 1, newBase);
+        this.dna.splice(randomIndex, 1, newBase);
         const mutated = this.dna;
         return mutated;
         } else {
