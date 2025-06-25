@@ -40,7 +40,7 @@ const pAequorFactory = (specimenNum, dna) => {
         }
       };
       const percentDNA = (identicalBases/this.dna.length) * 100;
-      return `specimen #1 and specimen #2 have ${percentDNA}% DNA in common`;
+      return `specimen #${this.specimenNum} and specimen #${pAequor.specimenNum} have ${percentDNA}% DNA in common`;
     },
     willLikelySurvive() {
       let baseCounter = 0;
@@ -50,7 +50,7 @@ const pAequorFactory = (specimenNum, dna) => {
         }
       } // Count the number of 'C' and 'G' bases
       // If the count is greater than 60% of the total length of the DNA strand
-      if (baseCounter > (this.dna.length/10)*6) {
+      if (baseCounter / this.dna.length >= 0.6) {
         return true;
       } else {
         return false;
@@ -63,9 +63,10 @@ const pAequorFactory = (specimenNum, dna) => {
 // Loop to fill up the array based on the instances desired
 const survivingSpecimenArray = [];
 const survivingSpecimen = instances => {
+  const specimen = pAequorFactory(i, mockUpStrand());
   for (let i = 1; i > 0; i++) {
-    if (pAequorFactory(i, mockUpStrand()).willLikelySurvive() === true){
-      survivingSpecimenArray.push(pAequorFactory(i, mockUpStrand()));
+    if (specimen.willLikelySurvive()) {
+      survivingSpecimenArray.push(specimen);
     };
     if (survivingSpecimenArray.length === instances){
       break;
